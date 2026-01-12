@@ -8,6 +8,10 @@ from shapely.geometry import Point
 from pyproj import Proj, transform
 import requests
 import plotly.graph_objects as go
+import os
+
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Page configuration
 st.set_page_config(
@@ -76,8 +80,8 @@ def lon_lat_to_utm(lon, lat):
 def get_precinct_and_borough(lat, lon):
     """Get precinct and borough from coordinates"""
     try:
-        shapefile = './shapes/geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
-        borough_sh = './borough/nybb.shp'
+        shapefile = os.path.join(SCRIPT_DIR, 'shapes', 'geo_export_84578745-538d-401a-9cb5-34022c705879.shp')
+        borough_sh = os.path.join(SCRIPT_DIR, 'borough', 'nybb.shp')
         
         precinct_gdf = gpd.read_file(shapefile)
         borough_gdf = gpd.read_file(borough_sh)
@@ -142,7 +146,7 @@ with st.sidebar:
     """)
     
     st.markdown("---")
-    st.markdown("**Model Info:** LightGBM Classifier")
+    st.markdown("**Model Info:** XGBoost Classifier")
     st.markdown("**Data:** NYPD Crime Data (2008-2024)")
 
 # Main content
