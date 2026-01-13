@@ -1,11 +1,16 @@
 import joblib
 import pandas as pd
 import numpy as np
+import os
 
-# Load your trained model (change the path to your best model)
-model = joblib.load("./model/lightgbm_model.pkl")  # or xgboost_model.pkl, random_forest_model.pkl
-scaler = joblib.load("./model/scaler.pkl")
-label_encoders = joblib.load("./model/label_encoders.pkl")
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_DIR = os.path.join(SCRIPT_DIR, "model")
+
+# Load XGBoost model and preprocessing artifacts
+model = joblib.load(os.path.join(MODEL_DIR, "xgboost_model.pkl"))
+scaler = joblib.load(os.path.join(MODEL_DIR, "scaler.pkl"))
+label_encoders = joblib.load(os.path.join(MODEL_DIR, "label_encoders.pkl"))
 
 def create_df(date, hour, latitude, longitude, place, age, race, gender, precinct, borough):
     """

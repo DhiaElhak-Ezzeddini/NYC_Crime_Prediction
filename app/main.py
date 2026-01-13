@@ -8,6 +8,10 @@ from shapely.geometry import Point
 from pyproj import Proj, transform
 import requests
 import plotly.graph_objects as go
+import os
+
+# Get the directory where this script is located
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Page configuration
 st.set_page_config(
@@ -45,6 +49,35 @@ st.markdown("""
         margin: 1rem 0;
         box-shadow: 0 10px 30px rgba(0,0,0,0.3);
     }
+    .hero-banner {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #F093FB 100%);
+        padding: 2.5rem;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .hero-banner h2 {
+        color: white;
+        font-size: 2.5rem;
+        margin: 0.5rem 0;
+        font-weight: 900;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        letter-spacing: 1px;
+    }
+    .hero-banner p {
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 1.1rem;
+        margin: 1rem 0 0 0;
+        line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .hero-icon {
+        font-size: 3rem;
+        margin-bottom: 0.5rem;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -76,8 +109,8 @@ def lon_lat_to_utm(lon, lat):
 def get_precinct_and_borough(lat, lon):
     """Get precinct and borough from coordinates"""
     try:
-        shapefile = './shapes/geo_export_84578745-538d-401a-9cb5-34022c705879.shp'
-        borough_sh = './borough/nybb.shp'
+        shapefile = os.path.join(SCRIPT_DIR, 'shapes', 'geo_export_84578745-538d-401a-9cb5-34022c705879.shp')
+        borough_sh = os.path.join(SCRIPT_DIR, 'borough', 'nybb.shp')
         
         precinct_gdf = gpd.read_file(shapefile)
         borough_gdf = gpd.read_file(borough_sh)
@@ -142,7 +175,7 @@ with st.sidebar:
     """)
     
     st.markdown("---")
-    st.markdown("**Model Info:** LightGBM Classifier")
+    st.markdown("**Model Info:** XGBoost Classifier")
     st.markdown("**Data:** NYPD Crime Data (2008-2024)")
 
 # Main content
@@ -152,9 +185,10 @@ st.markdown('<h1 class="main-header">🗽 NYC Crime Risk Analyzer 🚔</h1>', un
 col1, col2, col3 = st.columns([1, 2, 1])
 with col2:
     st.markdown("""
-        <div style="text-align: center; padding: 1rem; background-color: #f0f2f6; border-radius: 10px;">
-            <h3>Stay Informed, Stay Safe</h3>
-            <p>Predict potential crime risks at any NYC location using advanced AI models trained on millions of historical crime records.</p>
+        <div class="hero-banner">
+            <div class="hero-icon">🛡️</div>
+            <h2>Stay Informed, Stay Safe</h2>
+            <p>Empower yourself with data-driven insights about crime risks in NYC. Make informed decisions about where and when you travel using advanced AI models trained on millions of historical crime records.</p>
         </div>
     """, unsafe_allow_html=True)
 
